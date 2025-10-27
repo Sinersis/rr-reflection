@@ -1,4 +1,4 @@
-module rr-reflection
+module github.com/Sinersis/rr-reflection
 
 go 1.25
 
