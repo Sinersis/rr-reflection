@@ -17,20 +17,20 @@ type Logger interface {
 	NamedLogger(name string) *zap.Logger
 }
 
-// RPCService interface - это то, что экспортирует GRPC плагин
-// Смотрите: github.com/roadrunner-server/grpc/v5/plugin.go
-type RPCService interface {
-	Server() *grpc.Server
+// GRPCService interface - соответствует методу из grpc/plugin.go
+// https://github.com/roadrunner-server/grpc/blob/master/plugin.go#L110
+type GRPCService interface {
+	GRPCServer() *grpc.Server
 }
 
 // Init инициализирует плагин с зависимостями
 // Endure автоматически найдёт GRPC плагин и передаст его
-func (p *Plugin) Init(log Logger, grpc RPCService) error {
+func (p *Plugin) Init(log Logger, grpcPlugin GRPCService) error {
 	p.log = log.NamedLogger(PluginName)
 	p.log.Info("REFLECTION PLUGIN INITIALIZED")
 
 	// Получаем gRPC сервер из GRPC плагина
-	p.server = grpc.Server()
+	p.server = grpcPlugin.GRPCServer()
 
 	if p.server == nil {
 		p.log.Warn("grpc server is nil, reflection will not be registered")
@@ -54,7 +54,7 @@ func (p *Plugin) Serve() chan error {
 
 	// Регистрируем gRPC Reflection
 	reflection.Register(p.server)
-	p.log.Info("✅ GRPC REFLECTION REGISTERED SUCCESSFULLY")
+	p.log.Info("✅ GRPC REFLECTION REGISTERED SUCCESSFULLY ✅")
 
 	return errCh
 }
@@ -73,5 +73,5 @@ func (p *Plugin) Name() string {
 // Weight должен быть больше чем у GRPC плагина (10)
 // чтобы инициализироваться ПОСЛЕ него
 func (p *Plugin) Weight() uint {
-	return 20
+	return 11
 }
