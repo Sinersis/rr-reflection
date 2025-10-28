@@ -20,7 +20,7 @@ type Logger interface {
 	NamedLogger(name string) *zap.Logger
 }
 
-type GRPCServer interface {
+type RPCService interface {
 	GetServer() *grpc.Server
 }
 
@@ -55,7 +55,7 @@ func (p *Plugin) Stop() error {
 	return nil
 }
 
-func (p *Plugin) Init(l Logger, gp GRPCServer, cfg Configurer) error {
+func (p *Plugin) Init(l Logger, gp RPCService, cfg Configurer) error {
 	const op = errors.Op("reflection_plugin_init")
 
 	p.logger = l.NamedLogger(PluginName)
