@@ -16,18 +16,18 @@ type Logger interface {
 
 func (p *Plugin) Init(log Logger) error {
 	p.log = log.NamedLogger(PluginName)
-	p.log.Info("🚀🚀🚀 REFLECTION PLUGIN INITIALIZED 🚀🚀🚀")
+	p.log.Info("REFLECTION PLUGIN INITIALIZED")
 	return nil
 }
 
 func (p *Plugin) Serve() chan error {
-	p.log.Info("✅✅✅ REFLECTION SERVE CALLED ✅✅✅")
+	p.log.Info("REFLECTION SERVE CALLED")
 	return make(chan error, 1)
 }
 
 func (p *Plugin) Stop() error {
 	if p.log != nil {
-		p.log.Info("🛑 REFLECTION STOPPED")
+		p.log.Info("REFLECTION STOPPED")
 	}
 	return nil
 }
@@ -37,5 +37,5 @@ func (p *Plugin) Name() string {
 }
 
 func (p *Plugin) Weight() uint {
-	return 11
+	return 20
 }
